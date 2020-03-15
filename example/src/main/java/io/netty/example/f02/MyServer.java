@@ -8,6 +8,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class MyServer {
     public static void main(String[] args) throws Exception {
+        /**
+         * bossGroup 接受客户端连接，进行转发
+         */
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup childGroup = new NioEventLoopGroup();
         try {

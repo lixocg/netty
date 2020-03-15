@@ -1,5 +1,6 @@
 package io.netty.example.f02;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -10,6 +11,14 @@ import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 
 public class MyClientInitializer extends ChannelInitializer<SocketChannel> {
+
+    /**
+     * 注释很重要
+     *  This method will be called once the {@link Channel} was registered. After the method returns this instance
+     *  will be removed from the {@link ChannelPipeline} of the {@link Channel}.
+     * @param ch            the {@link Channel} which was registered.
+     * @throws Exception
+     */
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();

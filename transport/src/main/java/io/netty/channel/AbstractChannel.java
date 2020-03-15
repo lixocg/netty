@@ -464,10 +464,14 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
             AbstractChannel.this.eventLoop = eventLoop;
 
+            //eventLoop.inEventLoop():当前执行线程是否是eventLoop中包装的线程，避免并发问题
+            //写法很巧妙 并不通过加锁，提高效率
             if (eventLoop.inEventLoop()) {
+                //如果是用eventLoop中包装的线程来执行Channel注册
                 register0(promise);
             } else {
                 try {
+                    //如果不是将Channel注册提交给eventLoop包装的线程执行
                     eventLoop.execute(new Runnable() {
                         @Override
                         public void run() {
