@@ -18,6 +18,7 @@ public class MyServer {
             serverBootstrap.group(bossGroup,childGroup).channel(NioServerSocketChannel.class)
                     .childHandler(new MyServerInitializer());
 
+            //sync()确保绑定成功
             ChannelFuture channelFuture = serverBootstrap.bind(8899).sync();
             channelFuture.channel().closeFuture().sync();
         }finally {
