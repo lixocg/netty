@@ -1,4 +1,4 @@
-package io.netty.example.f02;
+package io.netty.example.mystudy.f02;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -8,6 +8,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class MyClient {
     public static void main(String[] args) throws Exception {
+
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
         try{

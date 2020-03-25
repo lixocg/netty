@@ -1,4 +1,4 @@
-package io.netty.example.f02;
+package io.netty.example.mystudy.f02;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
