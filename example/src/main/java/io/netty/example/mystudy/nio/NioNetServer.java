@@ -4,7 +4,9 @@ package io.netty.example.mystudy.nio;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.time.LocalDate;
 import java.util.Set;
+import java.util.UUID;
 
 public class NioNetServer {
     public static void main(String[] args) throws Exception {
@@ -59,6 +61,14 @@ public class NioNetServer {
                             System.out.println("from client ：" + new String(byteBuffer.array()));
                             byteBuffer.clear();
                         }
+
+                        //向客户端写会数据
+                        ByteBuffer buffer = ByteBuffer.allocateDirect(128);
+                        buffer.put(UUID.randomUUID().toString().getBytes());
+
+                        buffer.flip();
+                        socketChannel.write(buffer);
+
                     }
 
                     //移除当前事件，防止重复处理
