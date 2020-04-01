@@ -3,8 +3,10 @@ package io.netty.example.mystudy.nio;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.*;
-import java.time.LocalDate;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,6 +31,7 @@ public class NioNetServer {
                 System.out.println("等待5s，无事件发生");
                 continue;
             }
+
 
             //发生事件
             Set<SelectionKey> selectionKeys = selector.selectedKeys();
