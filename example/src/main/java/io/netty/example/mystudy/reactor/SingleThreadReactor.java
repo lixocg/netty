@@ -1,4 +1,4 @@
-package io.netty.example.mystudy.reactor.singleReactorSingleThread;
+package io.netty.example.mystudy.reactor;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;

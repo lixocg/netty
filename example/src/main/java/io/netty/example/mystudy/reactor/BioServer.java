@@ -1,4 +1,4 @@
-package io.netty.example.mystudy.reactor.bio;
+package io.netty.example.mystudy.reactor;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
