@@ -43,6 +43,8 @@ public class SingleThreadReactor {
                     Set<SelectionKey> selectedKeys = selector.selectedKeys();
 
                     selectedKeys.forEach(selectionKey -> {
+                        //read:1,write:4,accept:16
+                        System.out.println("当前事件:" + selectionKey.interestOps());
                         //事件分发
                         dispatch(selectionKey);
                     });
@@ -77,7 +79,7 @@ public class SingleThreadReactor {
                     if (sk.isAcceptable()) {
                         //接受连接
                         SocketChannel socketChannel = serverSocketChannel.accept();
-                        System.out.println("接受客户端连接:" + socketChannel.socket().getInetAddress());
+                        System.out.println("接受客户端连接:" + socketChannel.getRemoteAddress());
                         if (socketChannel != null) {
                             new Handler(selector, socketChannel);
                         }
@@ -100,12 +102,8 @@ public class SingleThreadReactor {
         public Handler(Selector selector, SocketChannel socketChannel) throws Exception {
             this.socketChannel = socketChannel;
             this.socketChannel.configureBlocking(false);
-            //注册通道
-            this.sk = this.socketChannel.register(selector, 0);
-            this.sk.attach(this);
-            //注册read事件
-            this.sk.interestOps(SelectionKey.OP_READ);
-
+            //注册通道,注册read事件
+            this.sk = this.socketChannel.register(selector, SelectionKey.OP_READ, this);
             //唤醒等待事件
             selector.wakeup();
         }
@@ -136,9 +134,12 @@ public class SingleThreadReactor {
             output.put(UUID.randomUUID().toString().getBytes());
             output.flip();
             this.socketChannel.write(output);
+            output.clear();
             if (outputIsComplete()) {
-                sk.cancel();
+//                sk.cancel();
+                this.sk.interestOps(SelectionKey.OP_READ);
             }
+
         }
 
         public boolean inputIsComplete() {
@@ -152,6 +153,7 @@ public class SingleThreadReactor {
         void process(ByteBuffer input) {
             input.flip();
             System.out.println("业务正在处理数据....." + new String(input.array()));
+            input.clear();
         }
     }
 

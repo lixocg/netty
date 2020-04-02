@@ -27,7 +27,7 @@ public class NioNetServer {
 
         //事件轮询选择
         while (true) {
-            if (selector.select(5000) == 0) {
+            if (selector.select(15000) == 0) {
                 System.out.println("等待5s，无事件发生");
                 continue;
             }
