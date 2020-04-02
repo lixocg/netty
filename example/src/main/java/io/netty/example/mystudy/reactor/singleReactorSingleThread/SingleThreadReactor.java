@@ -6,7 +6,6 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,9 +26,9 @@ public class SingleThreadReactor {
             //绑定端口
             serverSocketChannel.socket().bind(new InetSocketAddress(port));
 
-            //注册channel
+            //注册channel，并注册accept事件
             SelectionKey selectionKey = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            selectionKey.attach(new Acceptor());
+            selectionKey.attach(new Acceptor(selectionKey));
 
         }
 
@@ -43,12 +42,10 @@ public class SingleThreadReactor {
                     //发生事件集合
                     Set<SelectionKey> selectedKeys = selector.selectedKeys();
 
-                    Iterator<SelectionKey> iterator = selectedKeys.iterator();
-                    while (iterator.hasNext()) {
-                        SelectionKey selected = iterator.next();
+                    selectedKeys.forEach(selectionKey -> {
                         //事件分发
-                        dispatch(selected);
-                    }
+                        dispatch(selectionKey);
+                    });
                     //清空当前时间
                     selectedKeys.clear();
                 }
@@ -68,15 +65,22 @@ public class SingleThreadReactor {
          * inner class
          */
         class Acceptor implements Runnable {
+            final SelectionKey sk;
+
+            public Acceptor(SelectionKey sk) {
+                this.sk = sk;
+            }
 
             @Override
             public void run() {
                 try {
-                    //接受连接
-                    SocketChannel socketChannel = serverSocketChannel.accept();
-                    System.out.println("接受客户端连接:"+socketChannel.);
-                    if (socketChannel != null) {
-                        new Handler(selector, socketChannel);
+                    if (sk.isAcceptable()) {
+                        //接受连接
+                        SocketChannel socketChannel = serverSocketChannel.accept();
+                        System.out.println("接受客户端连接:" + socketChannel.socket().getInetAddress());
+                        if (socketChannel != null) {
+                            new Handler(selector, socketChannel);
+                        }
                     }
                 } catch (Exception e) {
 
@@ -92,10 +96,6 @@ public class SingleThreadReactor {
         ByteBuffer input = ByteBuffer.allocate(512);
         ByteBuffer output = ByteBuffer.allocate(512);
 
-        private final static int READING = 0;
-        private final static int SENDING = 1;
-
-        int state = READING;
 
         public Handler(Selector selector, SocketChannel socketChannel) throws Exception {
             this.socketChannel = socketChannel;
@@ -113,9 +113,9 @@ public class SingleThreadReactor {
         @Override
         public void run() {
             try {
-                if (state == READING) {
+                if (sk.isReadable()) {
                     read();
-                } else if (state == SENDING) {
+                } else if (sk.isWritable()) {
                     send();
                 }
             } catch (Exception e) {
@@ -126,8 +126,7 @@ public class SingleThreadReactor {
         public void read() throws Exception {
             this.socketChannel.read(input);
             if (inputIsComplete()) {
-                process();
-                state = SENDING;
+                process(input);
                 //注册写事件
                 this.sk.interestOps(SelectionKey.OP_WRITE);
             }
@@ -150,8 +149,9 @@ public class SingleThreadReactor {
             return true;
         }
 
-        void process() {
-            System.out.println("业务正在处理.....");
+        void process(ByteBuffer input) {
+            input.flip();
+            System.out.println("业务正在处理数据....." + new String(input.array()));
         }
     }
 
