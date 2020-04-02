@@ -9,7 +9,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Set;
 import java.util.UUID;
 
-public class SingleThreadReactor {
+public class SingleReactorSingleThread {
     public static void main(String[] args) throws Exception {
         new Thread(new Reactor(2537)).start();
     }
