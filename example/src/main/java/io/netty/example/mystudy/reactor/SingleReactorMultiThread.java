@@ -152,24 +152,26 @@ public class SingleReactorMultiThread {
             return true;
         }
 
-        void process(ByteBuffer input) {
-            System.out.println("业务正在处理数据....." + new String(input.array()));
+        String process(ByteBuffer input) {
+            String bizData = new String(input.array());
+            System.out.println("业务正在处理数据....." + bizData);
+            return bizData;
         }
 
-        synchronized void processAndHandOff(ByteBuffer input){
+        synchronized void processAndHandOff(ByteBuffer input) {
             //处理业务
             input.flip();
-            process(input);
+            String bizData = process(input);
             input.clear();
 
             //绑定事件
             this.sk.interestOps(SelectionKey.OP_WRITE);
         }
 
-        class Processor implements Runnable{
+        class Processor implements Runnable {
             private ByteBuffer input;
 
-            public Processor(ByteBuffer input){
+            public Processor(ByteBuffer input) {
                 this.input = input;
             }
 
@@ -179,7 +181,6 @@ public class SingleReactorMultiThread {
             }
         }
     }
-
 
 
 }
