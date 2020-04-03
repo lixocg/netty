@@ -133,6 +133,7 @@ public class SingleReactorMultiThread {
 
         public void send() throws Exception {
             output.put(UUID.randomUUID().toString().getBytes());
+            output.put("\r\n".getBytes());
             output.flip();
             this.socketChannel.write(output);
             output.clear();
