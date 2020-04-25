@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+<script>
+    var socket;
+    //判断流浪器是否支持websocket
+    if(window.WebSocket){
+        socket = new WebSocket("ws://localhost:7000/hello");
+
+        //获取服务端数据，msg是收到服务器会送的消息
+        socket.onmessage = function (msg) {
+            var responseText = document.getElementById("responseText");
+            responseText.value += "\n" + msg.data;
+        }
+
+        //连接开启
+        socket.onopen = function (msg) {
+            var responseText = document.getElementById("responseText");
+            responseText.value = "连接开启...";
+        }
+
+        //连接关闭
+        socket.onclose = function (msg) {
+            var responseText = document.getElementById("responseText");
+            responseText.value += "\n" + "连接关闭";
+        }
+    }else {
+        alert("不支持websocket");
+    }
+
+    //发送消息到服务器端
+    function send(msg) {
+        //websocket是否建立完成
+        if(!window.socket){
+            return;
+        }
+
+        if(socket.readyState === WebSocket.OPEN){
+            socket.send(msg);
+        }else {
+            alert("连接没有开启");
+        }
+    }
+</script>
+
+    <form onsubmit="return false">
+        <textarea name="message" style="height: 300px; width: 300px;"></textarea>
+        <input type="button" value="发送" onclick="send(this.form.message.value)">
+
+        <textarea id="responseText" style="height: 300px; width: 300px;"></textarea>
+        <input type="button" value="清空" onclick="document.getElementById('responseText').value=''">
+    </form>
+</body>
+</html>
