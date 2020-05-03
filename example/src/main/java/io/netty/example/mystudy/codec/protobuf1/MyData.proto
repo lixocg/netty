@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option optimize_for = SPEED;//加快解析
+option java_package ="io.netty.example.mystudy.codec.protobuf1";
+option java_outer_classname = "MyDataInfo";
+
+//protobuf 可以使用message管理其他message
+message MyMessage{
+
+    enum DataType{
+        //在protobuf3要求enum的编号从0开始
+        StudentType = 0;
+        workerType  = 1;
+    }
+
+    //用data_type 来标识传的哪一个枚举类型
+    DataType data_type = 1;
+
+    //标识每次枚举类型最多只能出现其中一个，节省空间
+    oneof dataBody{
+        Student student  = 2;
+        Worker worker = 3;
+    }
+
+}
+
+message Student {
+    int32 id = 1;
+    string name = 2;
+}
+
+message Worker{
+    string name = 1;
+    int32 age = 2;
+}
+
+
+
+//protoc --java_out=. Student.proto

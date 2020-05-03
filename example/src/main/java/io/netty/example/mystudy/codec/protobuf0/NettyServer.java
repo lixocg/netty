@@ -1,4 +1,4 @@
-package io.netty.example.mystudy.codec.protobuf;
+package io.netty.example.mystudy.codec.protobuf0;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
