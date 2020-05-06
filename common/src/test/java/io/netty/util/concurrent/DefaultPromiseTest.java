@@ -68,6 +68,7 @@ public class DefaultPromiseTest {
     @Test
     public void testCancelDoesNotScheduleWhenNoListeners() {
         EventExecutor executor = Mockito.mock(EventExecutor.class);
+
         Mockito.when(executor.inEventLoop()).thenReturn(false);
 
         Promise<Void> promise = new DefaultPromise<Void>(executor);

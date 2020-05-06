@@ -128,7 +128,8 @@
       <properties>
         <argLine.java9.extras />
         <!-- Export some stuff which is used during our tests -->
-        <argLine.java9>--illegal-access=deny ${argLine.java9.extras}</argLine.java9>
+<!--        <argLine.java9>&#45;&#45;illegal-access=deny ${argLine.java9.extras}</argLine.java9>-->
+        <argLine.java9>${argLine.java9.extras}</argLine.java9>
         <!-- Not use alpn agent as Java11 supports alpn out of the box -->
         <argLine.alpnAgent />
         <forbiddenapis.skip>true</forbiddenapis.skip>
@@ -153,7 +154,7 @@
       <properties>
         <argLine.java9.extras />
         <!-- Export some stuff which is used during our tests -->
-        <argLine.java9>--illegal-access=deny ${argLine.java9.extras}</argLine.java9>
+<!--        <argLine.java9>&#45;&#45;illegal-access=deny ${argLine.java9.extras}</argLine.java9>-->
         <!-- Not use alpn agent as Java11 supports alpn out of the box -->
         <argLine.alpnAgent />
         <forbiddenapis.skip>true</forbiddenapis.skip>
@@ -175,7 +176,7 @@
       <properties>
         <argLine.java9.extras />
         <!-- Export some stuff which is used during our tests -->
-        <argLine.java9>--illegal-access=deny --add-modules java.xml.bind ${argLine.java9.extras}</argLine.java9>
+<!--        <argLine.java9>&#45;&#45;illegal-access=deny &#45;&#45;add-modules java.xml.bind ${argLine.java9.extras}</argLine.java9>-->
         <!-- Not use alpn agent as Java10 supports alpn out of the box -->
         <argLine.alpnAgent />
         <forbiddenapis.skip>true</forbiddenapis.skip>
@@ -192,7 +193,7 @@
       <properties>
         <argLine.java9.extras />
         <!-- Export some stuff which is used during our tests -->
-        <argLine.java9>--illegal-access=deny --add-modules java.xml.bind ${argLine.java9.extras}</argLine.java9>
+<!--        <argLine.java9>&#45;&#45;illegal-access=deny &#45;&#45;add-modules java.xml.bind ${argLine.java9.extras}</argLine.java9>-->
         <!-- Not use alpn agent as Java9 supports alpn out of the box -->
         <argLine.alpnAgent />
         <!-- Skip as maven plugin not works with Java9 yet -->
@@ -369,13 +370,13 @@
     <module>handler</module>
     <module>handler-proxy</module>
     <module>example</module>
-<!--    <module>testsuite</module>-->
-<!--    <module>testsuite-autobahn</module>-->
-<!--    <module>testsuite-http2</module>-->
-<!--    <module>testsuite-osgi</module>-->
-<!--    <module>testsuite-shading</module>-->
-<!--    <module>testsuite-native-image</module>-->
-<!--    <module>transport-blockhound-tests</module>-->
+    <module>testsuite</module>
+    <module>testsuite-autobahn</module>
+    <module>testsuite-http2</module>
+    <module>testsuite-osgi</module>
+    <module>testsuite-shading</module>
+    <module>testsuite-native-image</module>
+    <module>transport-blockhound-tests</module>
     <module>microbench</module>
     <module>bom</module>
   </modules>
