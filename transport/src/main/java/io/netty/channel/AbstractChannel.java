@@ -71,6 +71,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
     protected AbstractChannel(Channel parent) {
         this.parent = parent;
         id = newId();
+        // NioMessageUnsafe
         unsafe = newUnsafe();
         pipeline = newChannelPipeline();
     }
@@ -517,6 +518,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                         // again so that we process inbound data.
                         //
                         // See https://github.com/netty/netty/issues/4805
+                        //由ServerBootstrapAcceptor入站处理器，接受到客户端连接，调用 channelRead()方法是向workGroup注册读事件
                         beginRead();
                     }
                 }
