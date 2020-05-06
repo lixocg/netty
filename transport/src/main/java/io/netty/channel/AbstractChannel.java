@@ -473,6 +473,10 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
             } else {
                 try {
                     //如果不是将Channel注册提交给eventLoop包装的线程执行
+
+                    //当向bossGroup线程注册Channel时，会执行到 SingleThreadEventExecutor.execute(java.lang.Runnable)
+                    //将注册任务加入到bossGroup的NioEventLoop的任务队列中，并且会启动 bossGroup中 NioEventLoop的死循环
+                    //bossGroup开启select，并从任务队列获取任务执行
                     eventLoop.execute(new Runnable() {
                         @Override
                         public void run() {
