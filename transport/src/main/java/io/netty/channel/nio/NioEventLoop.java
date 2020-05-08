@@ -431,6 +431,14 @@ public final class NioEventLoop extends SingleThreadEventLoop {
         }
     }
 
+    /**
+     * 事件循环，主要做三件事：
+     * 1.select感兴趣IO事件
+     * 2.处理事件
+     * 3.执行任务列队任务
+     *
+     * 用不退出循环，只有接到退出指令
+     */
     @Override
     protected void run() {
         int selectCnt = 0;
@@ -710,7 +718,10 @@ public final class NioEventLoop extends SingleThreadEventLoop {
 
             // Also check for readOps of 0 to workaround possible JDK bug which may otherwise lead
             // to a spin loop
+            //读和连接事件
             if ((readyOps & (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != 0 || readyOps == 0) {
+                //unsafe多态，如果是NioServerSocketChannel，读操作处理的是接受客户端的tcp连接，执行AbstractNioMessageChannel.NioMessageUnsafe.read
+                //如果是 NioSocketChannel，读操作就是从SocketChannel中读取ByteBuffer，执行AbstractNioByteChannel.NioByteUnsafe.read
                 unsafe.read();
             }
         } catch (CancelledKeyException ignored) {
