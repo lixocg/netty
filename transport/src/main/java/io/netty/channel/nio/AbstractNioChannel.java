@@ -415,7 +415,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         readPending = true;
 
         final int interestOps = selectionKey.interestOps();
-        //没有注册读事件，才去注册
+        //没有注册OP_ACCEPTOR事件，才去注册
         if ((interestOps & readInterestOp) == 0) {
             selectionKey.interestOps(interestOps | readInterestOp);
         }
