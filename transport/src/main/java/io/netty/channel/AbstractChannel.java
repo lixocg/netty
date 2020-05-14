@@ -512,6 +512,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
                 //对于启动的channel注册，成功之后回调通知：final ChannelFuture regFuture = initAndRegister();返回的regFuture增加的listener
                 safeSetSuccess(promise);
+
                 pipeline.fireChannelRegistered();
                 // Only fire a channelActive if the channel has never been registered. This prevents firing
                 // multiple channel actives if the channel is deregistered and re-registered.
@@ -558,6 +559,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
             boolean wasActive = isActive();
             try {
+                //绑定端口
                 doBind(localAddress);
             } catch (Throwable t) {
                 safeSetFailure(promise, t);
@@ -569,6 +571,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                 invokeLater(new Runnable() {
                     @Override
                     public void run() {
+                        //关联OP_ACCEPT为感兴趣的事件,通过HeadContextHandler#channelActive()完成
                         pipeline.fireChannelActive();
                     }
                 });

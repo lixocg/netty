@@ -61,6 +61,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
     private static final AtomicReferenceFieldUpdater<DefaultChannelPipeline, MessageSizeEstimator.Handle> ESTIMATOR =
             AtomicReferenceFieldUpdater.newUpdater(
                     DefaultChannelPipeline.class, MessageSizeEstimator.Handle.class, "estimatorHandle");
+
     final AbstractChannelHandlerContext head;
     final AbstractChannelHandlerContext tail;
 
@@ -1309,6 +1310,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
         HeadContext(DefaultChannelPipeline pipeline) {
             super(pipeline, null, HEAD_NAME, HeadContext.class);
+            //tailContext无unsafe对象
             unsafe = pipeline.channel().unsafe();
             setAddComplete();
         }
