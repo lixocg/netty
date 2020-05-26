@@ -445,6 +445,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
             try {
                 int strategy;
                 try {
+                    //没有任务时SELECT，有任务时执行selectNow，得到准备好的事件总数
                     strategy = selectStrategy.calculateStrategy(selectNowSupplier, hasTasks());
                     switch (strategy) {
                         case SelectStrategy.CONTINUE:
@@ -504,6 +505,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                         ranTasks = runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
                     }
                 } else {
+                    //有任务且selectNow=0(没有IO事件)，立即执行任务
                     ranTasks = runAllTasks(0); // This will run the minimum number of tasks
                 }
 

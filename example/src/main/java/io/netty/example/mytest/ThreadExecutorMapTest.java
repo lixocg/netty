@@ -3,6 +3,8 @@ package io.netty.example.mytest;
 import io.netty.util.concurrent.ImmediateEventExecutor;
 import io.netty.util.internal.ThreadExecutorMap;
 
+import java.util.concurrent.Executor;
+
 public class ThreadExecutorMapTest {
     public static void main(String[] args) {
         ImmediateEventExecutor eventExecutor = ImmediateEventExecutor.INSTANCE;
@@ -28,5 +30,9 @@ public class ThreadExecutorMapTest {
         eventExecutor.execute(apply);
 
         System.out.println(ThreadExecutorMap.currentExecutor() == eventExecutor);
+
+
+
+
     }
 }
